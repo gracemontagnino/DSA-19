@@ -49,7 +49,7 @@ The tests you will be running on your `MyLinkedList` class will be using this `C
 
     `public MyLinkedList()`
 
-2. Implement a method called `addLast` that will add a `Chicken` to the end of your `MyLinkedList`. Remember to consider the special case where `size` is 0.
+2. Implement a method called `addLast` that will add a `Chicken` to the end of your `MyLinkedList`. Remember to consider thnew Node();e special case where `size` is 0.
 
     `public void addLast(Chicken c)`
 

@@ -1,42 +1,76 @@
+import java.util.ArrayList;
+
 public class MyArrayList {
-    private Cow[] elems;
     private int size;
+    private Cow[] MyArrayList;
+    private Cow[] Newelems;
 
-    // TODO: Runtime: O(?)
+    // Runtime: O(1)
     public MyArrayList() {
-        // TODO
+        MyArrayList = new Cow[10];
     }
 
-    // TODO: Runtime: O(?)
+    // Runtime: O(1)
     public MyArrayList(int capacity) {
-        // TODO
+        MyArrayList = new Cow[capacity];
     }
 
-    // TODO: Runtime: O(?)
+    // Runtime: O(1)*
     public void add(Cow c) {
-        // TODO
+        if (size==MyArrayList.length){
+            Newelems= new Cow[MyArrayList.length*2];
+            System.arraycopy(MyArrayList, 0, Newelems, 0, MyArrayList.length);
+            MyArrayList = Newelems;
+
+        }
+        MyArrayList[size] = c;
+        size++;
     }
 
-    // TODO: Runtime: O(?)
+    // Runtime: O(1)
     public int size() {
-        // TODO
-        return -1;
+        return size;
     }
 
-    // TODO: Runtime: O(?)
-    public Cow get(int index) {
-        // TODO
-        return null;
+    // Runtime: O(1)
+    public Object get(int index) {
+        if (index >= size) {
+            throw new IndexOutOfBoundsException("Index out of bounds.");
+        }
+        return MyArrayList[index];
     }
 
-    // TODO: Runtime: O(?)
-    public Cow remove(int index) {
-        // TODO
-        return null;
+    // Runtime: O(N)
+    public Cow remove(int index){
+        if (index < size) {
+            for (int k = index; k < size-1; k++) {
+                MyArrayList[k] = MyArrayList[k + 1];
+                }
+
+        } else {
+            throw new IndexOutOfBoundsException("Index out of bounds.");
+        }size--;
+        return MyArrayList[index];
     }
 
-    // TODO: Runtime: O(?)
+    // Runtime: O(N)
     public void add(int index, Cow c) {
-        // TODO
+
+        if (index > size) {
+            throw new IndexOutOfBoundsException("Index out of bounds.");
+        }
+        if (size==MyArrayList.length){
+            Newelems= new Cow[MyArrayList.length*2];
+            System.arraycopy(MyArrayList, 0, Newelems, 0, MyArrayList.length);
+            MyArrayList = Newelems;
+
+        }
+        for (int i = size-1; i > index; i--) {
+            MyArrayList[i]= MyArrayList[i - 1];
+
+        }
+        MyArrayList[index]=c;
+        size++;
+
     }
 }
