@@ -51,8 +51,8 @@ Read SillyString.java. Understand the potential use of this class and try to ide
 ### Checkoff
 
 To be checked off, you'll be expected to explain (among other things):
-- the main purpose of a hash function. Are there any requirements or limitations when hashing?
-- at least one problem with SillyString's hash function.
+- the main purpose of a hash function. Are there any requirements or limitations when hashing? //represent datastructures as integers, can't do random stuff cuz its deterministic
+- at least one problem with SillyString's hash function.//overlap? kinda possible to find origionals? Different words with same letters get same mapping
 
 ### Survey
 
