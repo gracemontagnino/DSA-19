@@ -3,24 +3,25 @@ import java.util.concurrent.ThreadLocalRandom;
 public class QuickSort extends SortAlgorithm {
 
     private static final int INSERTION_THRESHOLD = 10;
+
     private void shuffleArray(int[] array) {
         for (int i = 0; i < array.length; i++) {
-            int randIndex = ThreadLocalRandom.current().nextInt(i+1);
+            int randIndex = ThreadLocalRandom.current().nextInt(i + 1);
             swap(array, i, randIndex);
         }
     }
 
     /**
-     * TODO
-     * Best-case runtime:
-     * Worst-case runtime:
-     * Average-case runtime:
-     *
-     * Space-complexity:
+     * Best-case runtime:nlogn (comparing pivot to all other in tree)
+     * Worst-case runtime:n^2 (its already sorted)
+     * Average-case runtime:nlogn
+     * <p>
+     * Space-complexity: logn ---???
      */
     @Override
     public int[] sort(int[] array) {
-        // TODO: Sort the array. Make sure you avoid the O(N^2) runtime worst-case
+        shuffleArray(array);
+        quickSort(array, 0, array.length - 1);
         return array;
     }
 
@@ -35,7 +36,8 @@ public class QuickSort extends SortAlgorithm {
     public void quickSort(int[] a, int lo, int hi) {
         if (lo < hi) {
             int p = partition(a, lo, hi);
-            // TODO
+            quickSort(a, lo, p - 1);
+            quickSort(a, p + 1, hi);
         }
     }
 
@@ -49,8 +51,18 @@ public class QuickSort extends SortAlgorithm {
      * @param hi The ending index of the subarray being considered (inclusive)
      */
     public int partition(int[] array, int lo, int hi) {
-        // TODO
-        return 0;
+        int pivot = array[lo];
+        int pos=lo+1;
+        for (int ind = lo + 1; ind <= hi; ind++) {
+            if (array[ind] < pivot) {
+                swap(array, ind, pos);
+                pos++;
+            }
+
+        }
+        swap(array, lo, pos-1);
+        int fiinal=pos-1;
+        return fiinal;
     }
 
 }

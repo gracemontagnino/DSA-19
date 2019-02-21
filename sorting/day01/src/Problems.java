@@ -36,14 +36,37 @@ public class Problems {
 
 
     /**
-     *
      * @param inputStream an input stream of integers
      * @return the median of the stream, after each element has been added
      */
     public static double[] runningMedian(int[] inputStream) {
-        double[] runningMedian = new double[inputStream.length];
-        // TODO
-        return runningMedian;
+        double[] Median = new double[inputStream.length];
+        PriorityQueue<Integer> less = maxPQ();
+        PriorityQueue<Integer> more = minPQ();
+        for (int i = 0; i < inputStream.length; i++) {
+            if (more.isEmpty() || inputStream[i] <= more.peek()) {
+                less.offer(inputStream[i]);
+            } else {
+                more.offer(inputStream[i]);
+            }
+
+            if (less.size() > more.size())
+                more.offer(less.poll());
+            if (less.size() < more.size())
+                less.offer(more.poll());
+
+            if (less.size() == more.size())
+                Median[i] = (less.peek() + more.peek()) / 2.0;
+            else {
+                if (more.size() > less.size())
+                    Median[i] = more.peek();
+                else
+                    Median[i] = less.peek();
+            }
+
+
+        }
+        return Median;
     }
 
 }
