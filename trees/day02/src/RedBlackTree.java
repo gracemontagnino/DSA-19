@@ -35,19 +35,29 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
     // make a left-leaning link lean to the right
     TreeNode<T> rotateRight(TreeNode<T> h) {
-        // TODO
-        return h;
-    }
+        TreeNode<T> x = h.leftChild;
+        h.leftChild = x.rightChild;
+        x.rightChild = h;
+        x.color = x.rightChild.color;
+        x.rightChild.color = RED;
+        return x;
+            }
 
     // make a right-leaning link lean to the left
     TreeNode<T> rotateLeft(TreeNode<T> h) {
-        // TODO
-        return h;
+        TreeNode<T> x = h.rightChild;
+        h.rightChild = x.leftChild;
+        x.leftChild = h;
+        x.color = x.leftChild.color;
+        x.leftChild.color = RED;
+        return x;
     }
 
     // flip the colors of a TreeNode and its two children
     TreeNode<T> flipColors(TreeNode<T> h) {
-        // TODO
+        h.color = !h.color;
+        h.leftChild.color = !h.leftChild.color;
+        h.rightChild.color = !h.rightChild.color;
         return h;
     }
 
@@ -60,20 +70,21 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
      * return balanced node
      */
     private TreeNode<T> balance(TreeNode<T> h) {
-        // TODO
+        if(isRed(h.rightChild))h=rotateLeft(h);
+        if(isRed(h.leftChild)&&isRed(h.leftChild.leftChild))h=rotateRight(h);
+        if(isRed(h.leftChild)&&isRed(h.rightChild))h=flipColors(h);
         return h;
     }
 
 
     /**
      * Recursively insert a new node into the BST
-     * Runtime: TODO
+     * Runtime: O(logn)
      */
     @Override
     TreeNode<T> insert(TreeNode<T> h, T key) {
         h = super.insert(h, key);
-        // TODO: use balance to correct for the three rotation cases
-        return h;
+        return balance(h);
     }
 
 
@@ -126,7 +137,6 @@ public class RedBlackTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     // ====================================
 
 
-    // TODO: understand how the following functions can be used to verify a valid LLRB
 
     public boolean is23() {
         return is23(root);
