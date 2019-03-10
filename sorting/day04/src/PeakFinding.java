@@ -48,14 +48,46 @@ public class PeakFinding {
     }
 
 
-    public static int findOneDPeak(int[] nums) {
-        // TODO
-        return 0;
-    }
+    public static int findOneDPeak(int[] nums) {//no combine step?
+        int low = 0;
+        int high = nums.length;
+        while (low < high) {
+            int mid = (low + high) / 2;
+            int side = peakOneD(mid, nums); //divide
+            if (side == 0) return mid;  //base
+            if (side == -1) high = mid; //conquer
+            if (side == 1) low = mid + 1; //conquer
+        }
+        return -1;
+    }//runtime:O(log(n)) b/c recursively calling it on halves
 
     public static int[] findTwoDPeak(int[][] nums) {
-        // TODO
+        boolean swap = true;
+        int lx = 0;
+        int hx = nums[0].length;
+        int ly = 0;
+        int hy = nums.length;
+        while (lx < hx && ly < hy) {
+            if (swap) {//divide
+                int midx = (lx + hx) / 2;
+                int ymax=maxYIndex(midx,ly,hy,nums);
+                int side = peakX(midx, ymax, nums);//divide
+                if (side == 0) return new int[] {ymax,midx};//base
+                if (side == -1) hx = midx;//conquer
+                if (side == 1) lx = midx + 1;//conquer
+            }
+            else {//divide
+                int midy = (ly + hy) / 2;
+                int xmax=maxXIndex(midy,lx,hx,nums);
+                int side1 = peakY(xmax, midy, nums);//divide
+                if (side1 == 0) return new int[]{midy,xmax};//base
+                if (side1 == -1) hy = midy;//conquer
+                if (side1 == 1) ly = midy + 1;//conquer
+            }swap=!swap;//combine
+        }
+
+
         return null;
-    }
+    }//runtime:O(nlog(n)) because doing log(n) "max" operations
 
 }
