@@ -1,23 +1,40 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static java.lang.Math.abs;
 
 /**
  * Board definition for the 8 Puzzle challenge
  */
-public class Board {
 
+public class Board {
+    public int hashCode(){
+        int hash=0;
+        for (int t=0;t<tiles.length;t++){
+            for (int p=0;p<tiles.length;p++){
+                hash=hash*10 +tiles[t][p];
+            }
+        }return hash;
+    }
     private int n;
     public int[][] tiles;
 
-    //TODO
-    // Create a 2D array representing the solved board state
-    private int[][] goal = {{}};
+    private int[][] goal = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
 
     /*
      * Set the global board size and tile state
      */
     public Board(int[][] b) {
-        // TODO: Your code here
+        tiles=new int [b.length][b.length];
+        n=b.length;
+        for(int h=0;h<n;h++){
+            for(int g=0;g<n;g++){
+                tiles[h][g]=b[h][g];
+            }
+        }
+        //tiles = b;
+        n = b.length;
     }
 
     /*
@@ -25,24 +42,46 @@ public class Board {
      (equal to 3 for 8 puzzle, 4 for 15 puzzle, 5 for 24 puzzle, etc)
      */
     private int size() {
-        // TODO: Your code here
-        return 0;
+        return n;
     }
 
     /*
      * Sum of the manhattan distances between the tiles and the goal
      */
     public int manhattan() {
-        // TODO: Your code here
-        return 0;
+        int total = 0;
+        for (int x = 0; x < n; x++) {
+            for (int y = 0; y < n; y++) {
+                int val = tiles[x][y];
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        if (val == goal[i][j] && val != 0) {
+                            total += abs(x - i) + abs(y - j);
+                            //System.out.println(total);
+                        }
+                    }
+
+                }
+            }
+        }
+        return total;
     }
 
     /*
      * Compare the current state to the goal state
      */
     public boolean isGoal() {
-        // TODO: Your code here
-        return false;
+        boolean goals = false;
+        for (int x = 0; x < n; x++) {
+            for (int y = 0; y < n; y++) {
+                if (goal[x][y] != tiles[x][y]) {
+                    return false;
+                }
+
+            }
+        }
+        return true;
+
     }
 
     /*
@@ -50,16 +89,68 @@ public class Board {
      * Research how to check this without exploring all states
      */
     public boolean solvable() {
-        // TODO: Your code here
-        return false;
+        int inv = 0;
+        int index=0;
+        int[] iter=new int[tiles.length*tiles.length];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                iter[index]=(tiles[i][j]);
+                index++;
+                }
+            }
+
+        for (int x=0;x<iter.length;x++){
+            if ((iter[x])!=0){
+                   int y=x+1;
+                   while(y<iter.length){
+                       if (iter[x]>iter[y] && iter[x]>0 && iter[y]>0){inv++;}
+                       y++;
+                   }
+                }
+            }return (inv%2==0);
+
     }
 
     /*
      * Return all neighboring boards in the state tree
      */
     public Iterable<Board> neighbors() {
-        // TODO: Your code here
-        return null;
+
+        ArrayList<Board> inter = new ArrayList<>();
+        Board z = new Board(tiles);
+        for (int x = 0; x < n; x++) {
+            for (int y = 0; y < n; y++) {
+                if (tiles[x][y] == 0) {
+                    Board newboard;
+                    if (x != n - 1) {
+                        newboard=new Board(tiles);
+                        newboard.tiles[x][y] = tiles[x + 1][y];
+                        newboard.tiles[x + 1][y] = 0;
+                        inter.add(newboard);
+                    }
+                    if (y != n - 1) {
+                        newboard=new Board(tiles);
+                        newboard.tiles[x][y] = tiles[x][y + 1];
+                        newboard.tiles[x][y + 1] = 0;
+                        inter.add(newboard);
+                    }
+                    if (x != 0) {
+                        newboard=new Board(tiles);
+                        newboard.tiles[x][y] = tiles[x - 1][y];
+                        newboard.tiles[x - 1][y] = 0;
+                        inter.add(newboard);
+                    }
+                    if (y != 0) {
+                        newboard=new Board(tiles);
+                        newboard.tiles[x][y] = tiles[x][y - 1];
+                        newboard.tiles[x][y - 1] = 0;
+                        inter.add(newboard);
+                    }
+                }
+
+            }
+        }
+        return inter;
     }
 
     /*
