@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NQueens {
-
+//O(E+V)??
 
     /**
      * Checks the 45° and 135° diagonals for an existing queen. For example, if the board is a 5x5
@@ -48,10 +48,32 @@ public class NQueens {
         return B;
     }
 
+    private static void solve(List<char[][]> answers, char[][] board,
+                              boolean[] usedColumns, int rowNumber){
+        if (rowNumber == board.length) {//base case
+            answers.add(copyOf(board));
+            return;
+        }
+        for (int i = 0; i < board[rowNumber].length; i++) {
 
+            if (!usedColumns[i] && !checkDiagonal(board, rowNumber, i)) {
+                board[rowNumber][i] = 'Q';
+                usedColumns[i] = true;
+                solve(answers,board,usedColumns,rowNumber+1);
+                usedColumns[i]=false;//backtracking
+                board[rowNumber][i] = '.';//backtracking
+        }
+
+    }}
     public static List<char[][]> nQueensSolutions(int n) {
-        // TODO
+        char[][] board = new char[n][n];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                board[i][j] = '.';
+            }
+        }
         List<char[][]> answers = new ArrayList<>();
+        solve(answers,board,new boolean[n],0);
         return answers;
     }
 
